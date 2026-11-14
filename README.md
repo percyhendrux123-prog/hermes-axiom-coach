@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://deployaxiom.com"><img src=".github/deploy-axiom-lockup.svg" alt="Deploy Axiom™" width="420"></a>
+</p>
+
 # Axiom Coach for Hermes
 
 `hermes-axiom-coach` is the Hermes side of three open projects: a coach app, its free self-serve
@@ -92,3 +96,7 @@ size x equipment x injury combination, and grids of macro and cardio inputs). Th
 
 Code: MIT, see `LICENSE`. Names and marks are not licensed; see `TRADEMARKS.md`. This plugin is not
 affiliated with or endorsed by Nous Research.
+
+---
+
+Built by [Deploy Axiom™](https://deployaxiom.com). The code is MIT licensed. The Deploy Axiom name and logo are trademarks of Deploy Axiom LLC and are not covered by the licence; see [TRADEMARKS.md](TRADEMARKS.md).
