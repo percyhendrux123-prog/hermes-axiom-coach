@@ -53,8 +53,14 @@ def _number(args, key, lo, hi, required=True):
         if required:
             raise InputError(f"{key} is required")
         return None
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
         raise InputError(f"{key} must be a number")
+    try:
+        finite = math.isfinite(value)
+    except OverflowError:  # an int too large for a float
+        finite = False
+    if not finite:
+        raise InputError(f"{key} must be a number between {_fmt(lo)} and {_fmt(hi)}")
     if value < lo or value > hi:
         raise InputError(f"{key} must be between {_fmt(lo)} and {_fmt(hi)}")
     return value

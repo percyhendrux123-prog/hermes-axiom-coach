@@ -27,8 +27,9 @@ tools of its own. If no such tools are loaded, the connector is not set up: run
 
 ## Rules that do not bend
 
-- **The server is set to `trust: untrusted`.** Every write tool asks for approval in Hermes before it
-  runs, and in unattended runs (cron, `hermes chat -q`) writes are refused. Treat that prompt as the
+- **The server is set to `trust: untrusted`.** A write tool asks for approval in Hermes before it
+  runs, and in unattended runs (cron, `hermes chat -q`) writes are refused, unless the coach has
+  answered Session or Always for that tool or turned approvals off. Treat that prompt as the
   coach's decision, not a formality, and never suggest turning it off to save time.
 - **Health screen.** Never answer, infer or fill in a client's health screen (PAR-Q) answers, and never
   describe a flag as cleared. `update_client_onboarding` may key only answers the coach says the client

@@ -113,6 +113,16 @@ class Macros(unittest.TestCase):
         for patch in ({"sex": "other"}, {"goal": "bulk"}, {"activity_level": "extreme"}):
             self.assertIn("error", call(T.macros, {**BASE, **patch}), patch)
 
+    def test_huge_integers_are_refused_not_raised(self):
+        # Review R1 finding 2: math.isfinite(10**400) raised OverflowError past the guard.
+        r = call(T.macros, {**BASE, "age_years": 10 ** 400})
+        self.assertIn("error", r)
+        self.assertEqual(r["education"], EDU)
+        r = call(T.cardio, {"modality": "rower", "weight_kg": 10 ** 400, "duration_minutes": 30, "intensity": "low"})
+        self.assertIn("error", r)
+        r = call(T.cardio, {"modality": "rower", "weight_kg": 80, "duration_minutes": -(10 ** 400), "intensity": "low"})
+        self.assertIn("error", r)
+
 
 class Cardio(unittest.TestCase):
     def test_treadmill_distance_path(self):
@@ -201,6 +211,23 @@ class Setup(unittest.TestCase):
 
     def test_localhost_http_allowed(self):
         self.assertIn("--url http://localhost:8888/mcp", P.setup.slash("http://localhost:8888"))
+
+    def test_no_shell_metacharacters_reach_the_printed_commands(self):
+        # Review R1 finding 1: a host like "example.com;id;" used to be printed unquoted.
+        for raw in ("https://example.com;id;", "https://example.com|id", "https://ex$(id).com", "https://ex`id`.com",
+                    "https://example.com&id", "https://exa mple.com", "https://example.com>x", "https://ex'a.com",
+                    "https://-bad.example.com", "https://example..com", "https://exämple.com", "https://example",
+                    "https://example.com\nid", "https://example.com\rid"):
+            out = P.setup.slash(raw)
+            self.assertNotIn("hermes mcp add", out, repr(raw))
+        with self.assertRaises(ValueError):
+            P.setup.render("https://example.com", "coach\n")
+        with self.assertRaises(ValueError):
+            P.setup.render("https://example.com", "coach;id")
+
+    def test_ip_and_ipv6_hosts(self):
+        self.assertIn("--url https://203.0.113.5/mcp", P.setup.slash("https://203.0.113.5"))
+        self.assertIn("--url 'http://[::1]:8888/mcp'", P.setup.slash("http://[::1]:8888"))
 
     def test_writes_nothing(self):
         import os

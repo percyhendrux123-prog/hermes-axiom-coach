@@ -3,12 +3,28 @@
 The plugin never edits Hermes config, never stores a token and makes no network call. It prints
 the commands (or the equivalent config block) for the person to run or paste themselves.
 """
+import ipaddress
 import re
+import shlex
 from urllib.parse import urlsplit
 
 DEFAULT_NAME = "axiom-coach"
-_NAME_RE = re.compile(r"^[a-z0-9][a-z0-9_-]{0,39}$")
+_NAME_RE = re.compile(r"[a-z0-9][a-z0-9_-]{0,39}")
+_LABEL_RE = re.compile(r"[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?")
+_SAFE_TEXT_RE = re.compile(r"[A-Za-z0-9.:/\[\]_-]+")
 _LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
+
+
+def _valid_host(host):
+    """A DNS name made of plain labels, or an IP address. Anything else is refused."""
+    try:
+        ipaddress.ip_address(host)
+        return True
+    except ValueError:
+        pass
+    labels = host.split(".")
+    return len(host) <= 253 and len(labels) >= 1 and all(_LABEL_RE.fullmatch(label) for label in labels) \
+        and (len(labels) >= 2 or host == "localhost")
 
 USAGE = ("Usage: hermes axiom-coach setup <your app address> [--name <server name>]\n"
          "   or: /axiom-coach <your app address>\n"
@@ -25,7 +41,7 @@ def normalise_site(raw):
         text = "https://" + text
     parts = urlsplit(text)
     host = (parts.hostname or "").lower()
-    if not host or any(c in text for c in " \t\n\"'`$\\"):
+    if not host or any(ord(c) < 33 or ord(c) > 126 for c in text) or not _valid_host(host):
         raise ValueError("That does not look like a web address.")
     if parts.username or parts.password or parts.query or parts.fragment:
         raise ValueError("Use the plain site address, with no login, ? or # parts.")
@@ -40,19 +56,22 @@ def normalise_site(raw):
     netloc = f"[{host}]" if ":" in host else host
     if port:
         netloc += f":{port}"
-    return f"{parts.scheme}://{netloc}"
+    origin = f"{parts.scheme}://{netloc}"
+    if not _SAFE_TEXT_RE.fullmatch(origin):  # belt and braces: nothing a shell would treat specially
+        raise ValueError("That does not look like a web address.")
+    return origin
 
 
 def render(site, name=DEFAULT_NAME):
     origin = normalise_site(site)
-    if not _NAME_RE.match(name or ""):
+    if not isinstance(name, str) or not _NAME_RE.fullmatch(name):
         raise ValueError("Server name: lowercase letters, numbers, - or _, up to 40 characters.")
     url = f"{origin}/mcp"
     return f"""Axiom Coach: connect Hermes to {origin}
 This prints steps only. Nothing was written to your Hermes config.
 
-1. Add the server and mark it untrusted, so every write asks you first:
-   hermes mcp add {name} --url {url} --auth oauth
+1. Add the server and mark it untrusted, so writes ask you first:
+   hermes mcp add {name} --url {shlex.quote(url)} --auth oauth
    hermes config set mcp_servers.{name}.trust untrusted
    (hermes mcp add may open the sign-in page straight away; that is step 2.)
 
@@ -72,8 +91,9 @@ This prints steps only. Nothing was written to your Hermes config.
    Hermes keeps the sign-in in its own token store (~/.hermes/mcp-tokens/); this plugin never sees it.
 
 3. Restart Hermes (or start a new session). The app's tools appear as mcp_{name.replace('-', '_')}_*.
-   Reads run on their own. Every write (a message, a logged set, a program change) waits for your yes,
-   and in unattended runs (cron, hermes chat -q) a write is refused, not run.
+   Reads run on their own. A write (a message, a logged set, a program change) waits for your yes,
+   and in unattended runs (cron, hermes chat -q) it is refused, not run. Exceptions you choose: an
+   answer of Session or Always for one tool, /yolo, or approvals.mode: off skip that question.
 
 Open the app: {origin}/
 Put it on your Home Screen:

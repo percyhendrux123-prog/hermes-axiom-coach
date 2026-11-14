@@ -43,8 +43,10 @@ and follow the printed steps. In short: `hermes mcp add axiom-coach --url <site>
 your app's page with your app email and the emailed code, or paste a connector code made in the app),
 then restart Hermes.
 
-`trust: untrusted` is the point: reads run on their own, every write (a message, a logged set, a
-program change) asks you first, and in unattended runs (cron, `hermes chat -q`) a write is refused.
+`trust: untrusted` is the point: reads run on their own, a write (a message, a logged set, a program
+change) asks you first, and in unattended runs (cron, `hermes chat -q`) it is refused. The exceptions
+are yours to choose: answering Session or Always for a tool, `/yolo`, or `approvals.mode: off` skip the
+question (see Hermes's MCP `trust` setting).
 
 ## Limits
 

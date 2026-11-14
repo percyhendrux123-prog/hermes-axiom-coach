@@ -20,8 +20,9 @@ plan. A read-only code lets you read; a full-control code also lets you change t
   The server refuses calorie and protein targets below its floors; pass the refusal on as written.
 - **Rebuild:** `regenerate_my_plan` re-asks the whole intake, including the health screen.
 
-Each write asks for approval in Hermes first (the server is set to `trust: untrusted`), and in
-unattended runs a write is refused. That is on purpose.
+A write asks for approval in Hermes first (the server is set to `trust: untrusted`), and in
+unattended runs a write is refused, unless the person answered Session or Always for that tool or
+turned approvals off. That is on purpose. Still read each change back to them before you make it.
 
 ## The health screen: never yours to answer
 
