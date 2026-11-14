@@ -1,0 +1,30 @@
+test_every_case_matches (test_parity.CardioParity) ... ok
+test_halves_round_up_like_javascript (test_parity.JsRound) ... ok
+test_every_case_matches (test_parity.MealParity) ... ok
+test_every_case_matches (test_parity.TrainingParity) ... ok
+test_refuses_bad_input (test_tools.Cardio) ... ok
+test_treadmill_distance_path (test_tools.Cardio) ... ok
+test_every_result_and_refusal_carries_it (test_tools.EducationLine) ... ok
+test_any_yes_blocks_with_no_numbers (test_tools.Macros) ... ok
+test_health_screen_must_be_complete_and_boolean (test_tools.Macros) ... ok
+test_imperial_converts_like_the_web_app (test_tools.Macros) ... ok
+test_metric_and_imperial_cannot_mix (test_tools.Macros) ... ok
+test_ranges_follow_the_web_form (test_tools.Macros) ... ok
+test_unknown_choices_refused (test_tools.Macros) ... ok
+test_manifest_matches_registrations (test_tools.Registration) ... ok
+test_surfaces (test_tools.Registration) ... ok
+test_bare_host_and_name (test_tools.Setup) ... ok
+test_localhost_http_allowed (test_tools.Setup) ... ok
+test_no_network_or_file_writes_in_source (test_tools.Setup) ... ok
+test_prints_steps_for_a_site (test_tools.Setup) ... ok
+test_refuses_unsafe_addresses (test_tools.Setup) ... ok
+test_writes_nothing (test_tools.Setup) ... ok
+test_health_rule_is_in_the_plan_and_lite_skills (test_tools.Skills) ... ok
+test_no_price_or_coaching_upsell (test_tools.Skills) ... ok
+test_matches_engine (test_tools.Split) ... ok
+test_refuses_bad_input (test_tools.Split) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.013s
+
+OK

@@ -1,0 +1,10 @@
+name: hermes-axiom-coach
+version: "0.1.0"
+description: "Axiom Coach: skills for working a coach's desk and a self-serve plan through the open coach app's own connector, the three Lite calculators as local tools, and a setup command that prints the connector steps. No hooks, no stored tokens, no network calls from the plugin."
+author: hermes-axiom-coach contributors
+license: MIT
+homepage: https://github.com/percyhendrux123-prog/hermes-axiom-coach
+requires_hermes: ">=0.23.1"
+api_version: 1
+provides_tools: [axiom_lite_split, axiom_lite_macros, axiom_lite_cardio]
+provides_hooks: []
