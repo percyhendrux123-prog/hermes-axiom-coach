@@ -90,7 +90,7 @@ This prints steps only. Nothing was written to your Hermes config.
    coach console; self-serve: "Connect your own AI" in your app). A code is shown once.
    Hermes keeps the sign-in in its own token store (~/.hermes/mcp-tokens/); this plugin never sees it.
 
-3. Restart Hermes (or start a new session). The app's tools appear as mcp_{name.replace('-', '_')}_*.
+3. Restart Hermes (or start a new session). The app's tools appear as mcp__{name.replace('-', '_')}__*.
    Reads run on their own. A write (a message, a logged set, a program change) waits for your yes,
    and in unattended runs (cron, hermes chat -q) it is refused, not run. Exceptions you choose: an
    answer of Session or Always for one tool, /yolo, or approvals.mode: off skip that question.

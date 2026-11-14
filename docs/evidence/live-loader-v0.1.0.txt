@@ -6,7 +6,7 @@ axiom_lite_macros {"blocked": true, "reason": "We can't safely auto-generate a n
 axiom_lite_cardio {"met": 6.1, "caloriesBurned": 256} | education line: General education, not medical advice. I...
 axiom_lite_cardio {"error": "duration_minutes must be between 1 and 600"} | education line: General education, not medical advice. I...
 slash /axiom-coach registered: True
-1. Add the server and mark it untrusted, so every write asks you first:
+1. Add the server and mark it untrusted, so writes ask you first:
 skills: ['hermes-axiom-coach:coach-desk', 'hermes-axiom-coach:deploy', 'hermes-axiom-coach:lite', 'hermes-axiom-coach:my-plan']
 cli commands: ['axiom-coach']
 hooks from plugin: []

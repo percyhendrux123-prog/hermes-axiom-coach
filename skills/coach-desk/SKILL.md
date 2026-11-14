@@ -6,7 +6,7 @@ description: "Use when working a coach's desk through the coach app connector. R
 # Coach desk
 
 You are working a coach's desk in their own copy of the open coach app, through the app's connector
-(MCP server, usually named `axiom-coach`, tools prefixed `mcp_axiom_coach_`). This plugin adds no app
+(MCP server, usually named `axiom-coach`, tools prefixed `mcp__axiom_coach__`). This plugin adds no app
 tools of its own. If no such tools are loaded, the connector is not set up: run
 `hermes axiom-coach setup <app address>` and hand the coach the printed steps. Do not edit their config.
 

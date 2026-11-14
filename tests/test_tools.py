@@ -196,6 +196,7 @@ class Setup(unittest.TestCase):
         self.assertIn("hermes mcp login axiom-coach", out)
         self.assertIn("Add to Home Screen", out)
         self.assertIn("Nothing was written", out)
+        self.assertIn("mcp__axiom_coach__*", out)  # Hermes names MCP tools mcp__<server>__<tool>
 
     def test_bare_host_and_name(self):
         out = P.setup.slash("setup my-coach.example.com --name coach2")

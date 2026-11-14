@@ -6,7 +6,7 @@ description: "Use when a person works their own self-serve plan through the app 
 # My plan (self-serve)
 
 The person has their own self-serve plan in a copy of the open coach app and has connected you through
-the app's connector (tools prefixed `mcp_axiom_coach_`, the `my_*` tools). There is no coach on this
+the app's connector (tools prefixed `mcp__axiom_coach__`, the `my_*` tools). There is no coach on this
 plan. A read-only code lets you read; a full-control code also lets you change their week.
 
 ## What you can do
