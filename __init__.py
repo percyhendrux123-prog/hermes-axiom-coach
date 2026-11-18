@@ -27,7 +27,7 @@ def _frontmatter_description(path):
 
 def register(ctx):
     for name, schema, handler in TOOLS:
-        ctx.register_tool(name=name, toolset="axiom-coach", schema=schema, handler=handler,
+        ctx.register_tool(name=name, toolset="axiom-lite", schema=schema, handler=handler,
                           description=schema["description"])
     for skill in SKILLS:
         path = ROOT / "skills" / skill / "SKILL.md"

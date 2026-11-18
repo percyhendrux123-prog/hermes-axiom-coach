@@ -181,6 +181,14 @@ class Registration(unittest.TestCase):
         self.assertEqual(set(self.ctx.cli), {"axiom-coach"})
         self.assertEqual(self.ctx.hooks, [], "v0.1 ships no hooks")
 
+    def test_toolset_does_not_shadow_the_connector(self):
+        # Hermes resolves a toolset name before an MCP server name. A plugin toolset named like the
+        # connector (setup_cmd.DEFAULT_NAME) hides every app tool from model sessions (seen in 0.1.0).
+        import setup_cmd
+        for name, (toolset, _, _) in self.ctx.tools.items():
+            self.assertEqual(toolset, "axiom-lite", name)
+            self.assertNotEqual(toolset, setup_cmd.DEFAULT_NAME, name)
+
     def test_manifest_matches_registrations(self):
         text = (ROOT / "plugin.yaml").read_text()
         for name in self.ctx.tools:

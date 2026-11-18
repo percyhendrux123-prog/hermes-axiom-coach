@@ -1,0 +1,49 @@
+Model-driven Hermes session: coach-desk + lite skills, two app connector tools, one Lite tool
+Run 2026-11-17, Hermes Agent v0.23.1, model claude-sonnet-5-5, signed-in connector `axiom-coach`
+(auth: oauth, trust: untrusted) on a demo coach workspace that holds only synthetic seed data.
+Plugin: 505892ab from the catalog entry plus the one-line 0.1.1 fix (Lite toolset renamed
+axiom-coach -> axiom-lite). At 505892ab unmodified the same prompt could not reach the app tools;
+see e2e-oauth-v0.1.x.md section 4.
+Command:
+  hermes chat --query-file q.txt --oneshot -Q --max-turns 10 --format stream-json
+String values in app tool output are masked as "<str>"; all output cut to 400 characters.
+
+PROMPT
+Test run of the hermes-axiom-coach plugin against a demo coach workspace that holds only synthetic seed data. Read-only. Do exactly this:
+1. Load the skill hermes-axiom-coach:coach-desk with skill_view and follow its read-only pass.
+2. Call the app connector tool get_support_queue once, then list_programs once (tools prefixed mcp__axiom_coach__).
+3. Load the skill hermes-axiom-coach:lite, then call axiom_lite_cardio_estimate (or, if that tool does not exist, axiom_lite_macros) once for a fictional test person: male, 34, 180 cm, 84 kg, moderately active, goal fat loss, who answers NO to all five health questions.
+4. Report in under 150 words: counts only from the desk (how many clients need attention, how many programs), no names; then the Lite result with the line the skill requires.
+Never call a write tool. Do not call any tool that lists tenants or buyers. Do not call any other tool except tool_describe if you need a schema.
+
+EVENTS
+tool_use    skill_view {"name": "hermes-axiom-coach:coach-desk"}
+tool_use    skill_view {"name": "hermes-axiom-coach:lite"}
+tool_result skill_view is_error= False {"success": true, "name": "hermes-axiom-coach:coach-desk", "content": "[Bundle context: This skill is part of the 'hermes-axiom-coach' plugin.\nSibling skills: deploy, lite, my-plan.\nUse qualified form to invoke siblings (e.g. hermes-axiom-coach:deploy).]\n\n---\nname: coach-desk\ndescription: \"Use when working a coach's desk through the coach app connector. Read first; every send waits for the 
+tool_result skill_view is_error= False {"success": true, "name": "hermes-axiom-coach:lite", "content": "[Bundle context: This skill is part of the 'hermes-axiom-coach' plugin.\nSibling skills: coach-desk, deploy, my-plan.\nUse qualified form to invoke siblings (e.g. hermes-axiom-coach:coach-desk).]\n\n---\nname: lite\ndescription: \"Use when someone wants a quick training split, macro targets or a cardio estimate with no account.\"\n--
+tool_use    mcp__axiom_coach__get_support_queue {}
+tool_result mcp__axiom_coach__get_support_queue is_error= False {"result": "{\n \"stale_after_days_used\": 7,\n \"unread_threads\": 2,\n \"unseen_checkins\": 3,\n \"unseen_checkin_ids\": [\n  {\n   \"id\": "<str>",\n   \"client_id\": "<str>",\n   \"submitted_at\": "<str>"\n  },\n  {\n   \"id\": "<str>",\n   \"client_id\": "<str>",\n   \"submitted_at\": "<str>"\n  },\n  {\n   \"id\": "<str>",\n   \"client_id\": "<str>",\n   \"submitted_at\": "<str>"\n  }\n ],\n
+tool_use    mcp__axiom_coach__list_programs {}
+tool_result mcp__axiom_coach__list_programs is_error= False {"result": "[\n {\n  \"id\": "<str>",\n  \"name\": "<str>",\n  \"is_default\": true,\n  \"origin\": "<str>",\n  \"days\": 7,\n  \"exercises\": 16,\n  \"archived_at\": null\n },\n {\n  \"id\": "<str>",\n  \"name\": "<str>",\n  \"is_default\": false,\n  \"origin\": "<str>",\n  \"days\": 7,\n  \"exercises\": 21,\n  \"archived_at\": null\n }\n]"}
+tool_use    tool_describe {"names": ["axiom_lite_macros"]}
+tool_result tool_describe is_error= False {"tools": {"axiom_lite_macros": {"description": "Lite macro calculator: daily calorie, protein, fat and carb targets (Mifflin-St Jeor) and a one-week meal structure. Local, no network. health_screen must hold the person's own answers to the five questions, asked word for word; never fill one in for them. Any yes returns no targets and points to a health professional. Estimates, not medical advice.
+tool_use    axiom_lite_macros {"sex": "male", "age_years": 34, "height_cm": 180, "weight_kg": 84, "activity_level": "moderate", "goal": "fat_loss", "health_screen": {"heart_condition": false, "chest_pain_during_activity": false, "pregnant_or_nursing": false, "eating_disorder": false, "metabolic_medication": false}}
+tool_result axiom_lite_macros is_error= False {"blocked": false, "macros": {"calories": 2290, "proteinG": 176, "fatG": 64, "carbsG": 253}, "days": [{"dayLabel": "Day 1", "meals": [{"label": "Meal 1", "description": "Lean protein source + complex carbohydrate + vegetables (portion to hit daily macro targets)."}, {"label": "Meal 2", "description": "Lean protein source + complex carbohydrate + vegetables (portion to hit daily macro targets)."}, 
+
+FINAL ANSWER (exit_code 0 )
+Desk (read-only):
+- 3 clients need attention: 2 unread threads, 3 unseen check-ins, and all 3 are stale on training (73 days since the last session).
+- 2 programs in the library.
+
+Lite: `axiom_lite_cardio_estimate` doesn't exist, so I used `axiom_lite_macros`. The test person was male, 34, 180 cm, 84 kg, moderate activity, fat loss. You gave NO for all five health questions, and I passed those answers as given.
+- Calories: 2290
+- Protein: 176 g
+- Fat: 64 g
+- Carbs: 253 g
+- The tool also returned a 7-day meal structure.
+
+Disclaimer: Estimates based on the Mifflin-St Jeor equation. Not medical advice. Adjust based on real-world progress.
+
+Education line: General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat.
+
+I made no write calls and no tenant or buyer lookups.

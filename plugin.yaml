@@ -1,5 +1,5 @@
 name: hermes-axiom-coach
-version: "0.1.0"
+version: "0.1.1"
 description: "Axiom Coach: skills for working a coach's desk and a self-serve plan through the open coach app's own connector, the three Lite calculators as local tools, and a setup command that prints the connector steps. No hooks, no stored tokens, no network calls from the plugin."
 author: hermes-axiom-coach contributors
 license: MIT

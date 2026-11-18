@@ -44,8 +44,8 @@ hermes axiom-coach setup https://your-coach-app.example.com
 
 and follow the printed steps. In short: `hermes mcp add axiom-coach --url <site>/mcp --auth oauth`,
 `hermes config set mcp_servers.axiom-coach.trust untrusted`, `hermes mcp login axiom-coach` (sign in on
-your app's page with your app email and the emailed code, or paste a connector code made in the app),
-then restart Hermes.
+your app's page: a coach pastes a connector code made on the app's AI screen; a self-serve member
+uses their app email and the emailed code), then restart Hermes.
 
 `trust: untrusted` is the point: reads run on their own, a write (a message, a logged set, a program
 change) asks you first, and in unattended runs (cron, `hermes chat -q`) it is refused. The exceptions
@@ -65,7 +65,8 @@ question (see Hermes's MCP `trust` setting).
 
 ## Disclosures
 
-- **Hermes surfaces used:** `ctx.register_tool` (three tools, toolset `axiom-coach`),
+- **Hermes surfaces used:** `ctx.register_tool` (three tools, toolset `axiom-lite`; not `axiom-coach`,
+  which is the connector's server name and would hide the app's tools),
   `ctx.register_skill` (four bundled read-only skills), `ctx.register_command` (`/axiom-coach`),
   `ctx.register_cli_command` (`hermes axiom-coach`). No hooks, no middleware, no dashboard or Desktop half.
 - **Files read:** its own four `SKILL.md` files at load time. **Files written:** none.
