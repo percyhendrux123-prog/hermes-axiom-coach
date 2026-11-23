@@ -1,0 +1,106 @@
+Claude Code port of hermes-axiom-coach: live check, Claude Code 2.1.325, throwaway CLAUDE_CONFIG_DIR.
+Marketplace added from the local repo path, both plugins installed from it, headless `claude -p` runs below.
+Harmless inputs only. Tool results are shortened where marked [...].
+
+=== FIRST RUN (found a real bug: the event carries tool_use_id; fixed in common.js META_FIELDS)
+TOOL_USE mcp__axiom-coach-lite__axiom_lite_split {"days_per_week": 3, "equipment": "full_gym", "injuries": ["knee"]}
+TOOL_RESULT {"error":"unknown field(s): tool_use_id","education":"General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat."}
+TOOL_USE mcp__axiom-coach-lite__axiom_lite_split {"days_per_week": 3, "equipment": "full_gym", "injuries": ["knee"]}
+TOOL_RESULT {"error":"unknown field(s): tool_use_id","education":"General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat."}
+FINAL The tool failed twice with the same error (`unknown field(s): tool_use_id`), so I have no `splitName` or Day 1 exercise to give you. I sent only `days_per_week`, `equipment` and `injuries`. The error looks like a problem in the tool or its wrapper, not in my inputs. I haven't made up a split. Do you want me to try again, or look at how the plugin is set up?
+
+=== split tool
+TOOL_USE mcp__axiom-coach-lite__axiom_lite_split {"days_per_week": 3, "equipment": "full_gym", "injuries": ["knee"]}
+TOOL_RESULT {"splitName":"Full Body","daysPerWeek":3,"days":[{"dayLabel":"Day 1","focus":"Full Body","exercises":[{"name":"Leg Press","sets":3,"reps":"8-12"},{"name":"Barbell Bench Press","sets":3,"reps":"8-12"},{"name":"Seated Cable Row","sets":3,"reps":"8-12"},{"name":"Barbell Romanian Deadlift","sets":3,"reps":"8-12"},{"name":"Plank","sets":3,"reps":"30-45s"}]},{"dayLabel":"Day 2","focus":"Full Body","exercises":[{"name":"Bar [...]
+FINAL **Split name:** Full Body (3 days/week)
+
+**Day 1 – Full Body**
+- Leg Press: 3 sets × 8-12 reps
+- Barbell Bench Press: 3 sets × 8-12 reps
+- Seated Cable Row: 3 sets × 8-12 reps
+- Barbell Romanian Deadlift: 3 sets × 8-12 reps
+- Plank: 3 sets × 30-45s
+
+**Disclaimer:** This is a single-week starting template, not a progressive program. Consult a professional before starting if you have any medical concerns.
+
+The tool also returned an education line: General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat.
+
+Leg Press is still on Day 1 even though you flagged a knee. The tool made only one knee swap, on Day 2 (Standing Hip Hinge to Toe Tap). If the leg press bothers your knee, ask a professional about it or pick a different movement.
+
+=== macros tool, five health answers all no
+TOOL_USE mcp__axiom-coach-lite__axiom_lite_macros {"sex": "male", "age_years": 30, "height_cm": 180, "weight_kg": 85, "activity_level": "sedentary", "goal": "fat_loss", "health_screen": {"heart_condition": false, "chest_pain_during_activity": false, "pregnant_or_nursing": false, "eating_disorder": false, "metabolic_medication": false}}
+TOOL_RESULT {"blocked":false,"macros":{"calories":1700,"proteinG":179,"fatG":47,"carbsG":140},"days":[{"dayLabel":"Day 1","meals":[{"label":"Meal 1","description":"Lean protein source + complex carbohydrate + vegetables (portion to hit daily macro targets)."},{"label":"Meal 2","description":"Lean protein source + complex carbohydrate + vegetables (portion to hit daily macro targets)."},{"label":"Meal 3","description":"Lean prote [...]
+FINAL - **Calories:** 1,700 kcal/day
+- **Protein:** 179 g
+- **Fat:** 47 g
+- **Carbs:** 140 g
+
+These are estimates from the Mifflin-St Jeor equation, not medical advice. Adjust them based on how your weight actually changes.
+
+=== macros tool, one health answer yes
+TOOL_USE mcp__axiom-coach-lite__axiom_lite_macros {"sex": "female", "age_years": 28, "height_cm": 165, "weight_kg": 60, "activity_level": "light", "goal": "maintenance", "health_screen": {"heart_condition": false, "chest_pain_during_activity": false, "pregnant_or_nursing": false, "eating_disorder": true, "metabolic_medication": false}}
+TOOL_RESULT {"blocked":true,"reason":"We can't safely auto-generate a nutrition plan based on what you told us. Please consult a qualified health professional before starting a calorie or macro plan.","education":"General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat."}
+FINAL The tool didn't return any targets. Because you answered yes to the eating disorder question, it blocked the request and gave no calorie, protein, fat, carb or meal-structure numbers.
+
+Its message was:
+
+> "We can't safely auto-generate a nutrition plan based on what you told us. Please consult a qualified health professional before starting a calorie or macro plan."
+
+It added this note:
+
+> "General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat."
+
+For someone in recovery, numeric targets can be risky. A registered dietitian, ideally one with eating-disorder experience, or your treatment team can set up a plan that supports your recovery. I can help with something that doesn't involve food numbers, like a training split, if you'd lik [...]
+
+=== cardio tool
+TOOL_USE mcp__axiom-coach-lite__axiom_lite_cardio {"modality": "treadmill", "duration_minutes": 30, "speed_mph": 3.5, "incline_percent": 2, "intensity": "moderate", "weight_kg": 80}
+TOOL_RESULT {"met":4.6,"caloriesBurned":195,"disclaimer":"Estimate only, based on standard MET formulas. Not a medical-grade measurement.","education":"General education, not medical advice. If you are pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat."}
+FINAL For a 30-minute treadmill session at 3.5 mph, 2% incline, moderate intensity, and 80 kg body weight:
+
+- **MET:** 4.6
+- **Calories burned:** about 195 kcal
+
+This is an estimate from standard MET formulas, not a medical-grade measurement.
+
+This is general education, not medical advice. If you're pregnant, have a medical condition, take medication, or have a history of an eating disorder, talk to a doctor or registered dietitian before changing how you eat.
+
+=== skills-only edition: axiom-coach:lite skill, tools disallowed
+TOOL_USE Skill {"skill": "axiom-coach:lite"}
+TOOL_RESULT Launching skill: axiom-coach:lite
+FINAL **Health questions:** you answered no to all five, so I can go ahead. Inputs are all within limits.
+
+**Steps**
+
+1. BMR = 10×85 + 6.25×180 − 5×30 + 5 = 850 + 1125 − 150 + 5 = **1830**
+2. TDEE = 1830 × 1.2 (sedentary) = **2196**
+3. Adjusted = 2196 − 500 (fat_loss) = **1696**
+4. Floor for male is 1600, and 1696 is larger, so floored = **1696**
+5. Calories = round(1696 / 10) × 10 = round(169.6) × 10 = 170 × 10 = **1700**
+6. Protein = round(85 × 2.1) = round(178.5) = **179 g**
+7. Fat = round(larger of 85 × 0.5 = 42.5 and 1700 × 0.25 / 9 = 47.22) = round(47.22) = **47 g**
+8. Carbs = round((1700 − 179×4 − 47×9) / 4) = round((1700 − 716 − 423) / 4) = round(561 / 4) = round(140.25) = **140 g**
+
+**Targets**
+
+| Calories | Protein | Fat | Carbs |
+|---|---|---|---|
+| 1700 kcal | 179 g | 47 g | 140 g |
+
+**Week of meal structure (Day 1 to Day 7, identical each day)**
+- Meal 1: Lean protein source + com [...]
+
+=== axiom-coach:connect skill
+TOOL_USE Skill {"skill": "axiom-coach:connect", "args": "https://example-coach.netlify.app/"}
+TOOL_RESULT Launching skill: axiom-coach:connect
+FINAL The address `https://example-coach.netlify.app/` is valid. It uses https, has no login, path, query or fragment, and I stripped the trailing slash. The origin is `https://example-coach.netlify.app`.
+
+## Steps for https://example-coach.netlify.app
+
+1. **Add the server.** Run this in a terminal. The name `axiom-coach` is only a suggestion.
+   ```
+   claude mcp add --transport http axiom-coach https://example-coach.netlify.app/mcp
+   ```
+
+2. **Sign in.** In Claude Code run `/mcp`, choose `axiom-coach` and follow the sign-in. You can also run `claude mcp login axiom-coach` in a terminal. Your browser opens the app's "Connect your AI" page. You can do either of these:
+   - Sign in with the app email and the code it emails you, then choose what the agent may do (Read-only, or Full control on a self-serve plan).
+   - Paste a connector code made in the app. A coach finds it in the AI tab of the  [...]

@@ -63,6 +63,19 @@ question (see Hermes's MCP `trust` setting).
   the app's server refuses it.
 - Hermes keeps the connector sign-in in its own token store. This plugin never sees or stores it.
 
+## Claude Code
+
+The same work is ported for Claude Code, in `claude-plugin/`, from one marketplace:
+
+```bash
+claude plugin marketplace add percyhendrux123-prog/hermes-axiom-coach
+claude plugin install axiom-coach@deploy-axiom-coach        # skills only: coach desk, self-serve plan, connect, deploy, Lite rules
+claude plugin install axiom-coach-lite@deploy-axiom-coach   # the three Lite calculators as local tools (a mod)
+```
+
+See `claude-plugin/coach/README.md` and `claude-plugin/lite/README.md` for what each does and does not
+do; the Hermes plugin above is unchanged.
+
 ## Disclosures
 
 - **Hermes surfaces used:** `ctx.register_tool` (three tools, toolset `axiom-lite`; not `axiom-coach`,

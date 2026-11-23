@@ -1,0 +1,20 @@
+{
+  "name": "axiom-coach",
+  "displayName": "Axiom Coach",
+  "version": "0.1.0",
+  "description": "Skills for working a coach's desk and a self-serve plan through the open coach app's own connector, the three Lite calculators as written rules, and connector setup steps. Skills only: no scripts, hooks or servers.",
+  "author": {
+    "name": "Deploy Axiom"
+  },
+  "homepage": "https://github.com/percyhendrux123-prog/hermes-axiom-coach",
+  "repository": "https://github.com/percyhendrux123-prog/hermes-axiom-coach",
+  "license": "MIT",
+  "keywords": [
+    "coaching",
+    "fitness",
+    "skills",
+    "calculators",
+    "connector"
+  ],
+  "icon": "./.claude-plugin/icon.png"
+}

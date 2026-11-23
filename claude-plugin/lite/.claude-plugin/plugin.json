@@ -1,0 +1,19 @@
+{
+  "name": "axiom-coach-lite",
+  "displayName": "Axiom Coach Lite Tools",
+  "version": "0.1.0",
+  "description": "The three Lite calculators as local tools for Claude Code: a training split, macro targets with five health questions first, and a cardio calorie estimate. A mod: no network, no files, no subprocesses, no MCP server.",
+  "author": {
+    "name": "Deploy Axiom"
+  },
+  "homepage": "https://github.com/percyhendrux123-prog/hermes-axiom-coach",
+  "repository": "https://github.com/percyhendrux123-prog/hermes-axiom-coach",
+  "license": "MIT",
+  "keywords": [
+    "fitness",
+    "calculators",
+    "mod",
+    "tools"
+  ],
+  "icon": "./.claude-plugin/icon.png"
+}
