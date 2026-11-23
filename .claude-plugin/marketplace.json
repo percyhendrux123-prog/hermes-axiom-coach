@@ -1,0 +1,21 @@
+{
+  "name": "deploy-axiom-coach",
+  "owner": {
+    "name": "Deploy Axiom"
+  },
+  "metadata": {
+    "description": "Axiom Coach for Claude Code, from Deploy Axiom."
+  },
+  "plugins": [
+    {
+      "name": "axiom-coach",
+      "source": "./claude-plugin/coach",
+      "description": "Skills for the open coach app's connector (coach desk, self-serve plan, connect, deploy) and the Lite calculators as written rules. Skills only."
+    },
+    {
+      "name": "axiom-coach-lite",
+      "source": "./claude-plugin/lite",
+      "description": "The three Lite calculators (split, macros, cardio) as local tools for Claude Code, run as a mod. No network, no files."
+    }
+  ]
+}

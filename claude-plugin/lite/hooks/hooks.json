@@ -1,0 +1,4 @@
+{
+  "description": "Axiom Coach Lite Tools: the three Lite calculators as local tools",
+  "modules": ["./register.js"]
+}
