@@ -16,5 +16,7 @@
     "calculators",
     "connector"
   ],
-  "icon": "./.claude-plugin/icon.png"
+  "icon": "./.claude-plugin/icon.png",
+  "privacyPolicyUrl": "https://github.com/percyhendrux123-prog/hermes-axiom-coach/blob/main/claude-plugin/coach/PRIVACY.md",
+  "supportUrl": "https://github.com/percyhendrux123-prog/hermes-axiom-coach/issues"
 }
